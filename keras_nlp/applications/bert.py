@@ -73,7 +73,11 @@ class BertBaseUncasedEn(keras.Model):
         )
 
         # Load canned preprocessor from hub as alternative
-        self.hub_preprocessor = hub.KerasLayer(PREPROC_HUB_URL)
+        self.hub_preprocessor = hub.load(PREPROC_HUB_URL)
+        self.hub_tokenizer = hub.KerasLayer(self.hub_preprocessor.tokenize)
+        self.hub_pack_inputs = hub.KerasLayer(
+            self.hub_preprocessor.bert_pack_inputs,
+            arguments=dict(seq_length=sequence_length))
 
         # Initialize encoder layers.
         self.encoder = hub.KerasLayer(BERT_HUB_URL, trainable=False)
@@ -91,11 +95,12 @@ class BertBaseUncasedEn(keras.Model):
         return {
             "input_word_ids": token_ids,
             "input_type_ids": segment_ids,
-            "input_mask": token_ids != 0,
+            "input_mask": tf.cast(token_ids != 0, tf.int32),
         }
     
     def preprocess_hub(self, inputs):
-       return self.hub_preprocessor(tf.constant(input))
+        inputs = [self.hub_tokenizer(tf.constant(x)) for x in inputs]
+        return self.hub_pack_inputs(inputs)
 
     def call(self, inputs):
         outputs = self.encoder(inputs)
