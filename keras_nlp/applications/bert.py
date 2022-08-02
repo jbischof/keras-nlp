@@ -23,7 +23,7 @@ BERT_HUB_URL = "https://tfhub.dev/tensorflow/bert_en_uncased_L-12_H-768_A-12/4"
 # Prebaked preproc graph from HUB
 PREPROC_HUB_URL = "https://tfhub.dev/tensorflow/bert_en_uncased_preprocess/3"
 # Needed for vocab file only for doing our own tokenization
-GS_FOLDER = "gs://cloud-tpu-checkpoints/bert/v4/uncased_L-12_H-768_A-12/"
+GS_FOLDER = "gs://cloud-tpu-checkpoints/bert/v3/uncased_L-12_H-768_A-12/"
 
 class BertBaseUncasedEn(keras.Model):
     """
