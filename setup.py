@@ -38,7 +38,7 @@ setup(
         "absl-py",
         "numpy",
         "packaging",
-        "tensorflow",
+        "tensorflow>2.9.0",
         "tensorflow-text",
     ],
     extras_require={

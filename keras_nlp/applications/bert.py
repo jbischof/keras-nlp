@@ -95,7 +95,7 @@ class BertBaseUncasedEn(keras.Model):
         }
     
     def preprocess_hub(self, inputs):
-       return self.hub_preprocessor(input)
+       return self.hub_preprocessor(tf.constant(input))
 
     def call(self, inputs):
         outputs = self.encoder(inputs)
